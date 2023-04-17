@@ -1,3 +1,4 @@
+import { wrap } from "module";
 import Button from "../element/button";
 import { css } from "../styles/styles";
 
@@ -62,7 +63,23 @@ export default function Home(props: Props) {
                             }}>Impossible</Button>
                     </div>
                 </div>
-                <div className={styles.leftbox()}></div>
+                <div className={styles.leftbox()}>
+                    <div className={styles.wrapper()}>
+                        <div className={styles.box()}></div>
+                        <div className={styles.box()}></div>
+                        <div className={styles.box()}></div>
+                    </div>
+                    <div className={styles.wrapper()}>
+                        <div className={styles.box()}></div>
+                        <div className={styles.box()}></div>
+                        <div className={styles.box()}></div>
+                    </div>
+                    <div className={styles.wrapper()}>
+                        <div className={styles.box()}></div>
+                        <div className={styles.box()}></div>
+                        <div className={styles.box()}></div>
+                    </div>
+                </div>
             </div>
         </div>
     </>;
@@ -86,7 +103,11 @@ const styles = {
         justifyContent: "center",
         alignItems: "center",
     }),
-    leftbox: css({}),
+    leftbox: css({
+        width: 700,
+        height: 700,
+        display: 'inline'
+    }),
     top: css({
         color: 'white',
         fontSize: 42,
@@ -94,4 +115,18 @@ const styles = {
         margin: 0
     }),
     bottom: css({}),
+    wrapper: css({
+        margin: 0,
+        padding: 10,
+        width: 660,
+        height: 210,
+        display: "flex"
+    }),
+    box: css({
+        width: 200,
+        height: 200,
+        backgroundColor: '#3E5461',
+        borderRadius: 25,
+        margin: 5,
+    })
 }
