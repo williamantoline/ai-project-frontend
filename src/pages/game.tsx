@@ -4,7 +4,7 @@ import { css } from "../styles/styles";
 
 interface Props {};
 
-export default function Home(props: Props) {
+export default function Game(props: Props) {
     return (
         <div className={styles.container()}>
             <div className={styles.centerbox()}>
@@ -108,6 +108,7 @@ const styles = {
     }),
     centerbox: css({
         display: "flex",
+        marginTop: 40,
     }),
     leftbox: css({
         justifyContent: "center",
