@@ -1,132 +1,112 @@
-import { wrap } from "module";
+import React from "react";
 import Button from "../element/button";
 import { css } from "../styles/styles";
-
+import { useNavigate } from "react-router-dom"; 
 
 interface Props {};
 
 export default function Home(props: Props) {
-    return <>
-        <div className={styles.container()}>
-            <div className={styles.centerbox()}>
-                <div className={styles.rightbox()}>
-                    <div className={styles.top()}>
-                        <h2>Choose</h2>
-                        <h2>difficulty level</h2>
-                    </div>
-                    <div className={styles.bottom()}>
-                        <Button style={{
-                            backgroundColor: 'transparent', 
-                            border: '1px solid white', 
-                            borderRadius: 30, 
-                            width: 300, 
-                            height: 55, 
-                            color: 'white',
-                            fontSize: 24,
-                            margin: 10
-                            }}>Easy</Button>
-                    </div>
-                    <div className={styles.bottom()}>
-                        <Button style={{
-                            backgroundColor: 'transparent', 
-                            border: '1px solid white', 
-                            borderRadius: 30, 
-                            width: 300, 
-                            height: 55, 
-                            color: 'white',
-                            fontSize: 24,
-                            margin: 10
-                            }}>Medium</Button>
-                    </div>
-                    <div className={styles.bottom()}>
-                        <Button style={{
-                            backgroundColor: 'transparent', 
-                            border: '1px solid white', 
-                            borderRadius: 30, 
-                            width: 300, 
-                            height: 55, 
-                            color: 'white',
-                            fontSize: 24,
-                            margin: 10
-                            }}>Hard</Button>
-                    </div>
-                    <div className={styles.bottom()}>
-                        <Button style={{
-                            backgroundColor: 'transparent', 
-                            border: '1px solid white', 
-                            borderRadius: 30, 
-                            width: 300, 
-                            height: 55, 
-                            color: 'white',
-                            fontSize: 24,
-                            margin: 10
-                            }}>Impossible</Button>
-                    </div>
-                </div>
-                <div className={styles.leftbox()}>
-                    <div className={styles.wrapper()}>
-                        <div className={styles.box()}></div>
-                        <div className={styles.box()}></div>
-                        <div className={styles.box()}></div>
-                    </div>
-                    <div className={styles.wrapper()}>
-                        <div className={styles.box()}></div>
-                        <div className={styles.box()}></div>
-                        <div className={styles.box()}></div>
-                    </div>
-                    <div className={styles.wrapper()}>
-                        <div className={styles.box()}></div>
-                        <div className={styles.box()}></div>
-                        <div className={styles.box()}></div>
-                    </div>
-                </div>
+    const navigate = useNavigate(); // Get the history object from React Router
+
+    const handleSignUpClick = () => {
+        // Logic to navigate to the sign up page
+        // You can replace this with your own implementation
+        navigate("/signup"); // Use history.push() to navigate to another page
+    };
+
+    const handlelogInClick = () => {
+        // Logic to navigate to the sign up page
+        // You can replace this with your own implementation
+        navigate("/login"); // Use history.push() to navigate to another page
+    };
+
+    return (
+        <div className={styles.body()}>
+            <div className={styles.title()}>Tic Tac Toe</div>
+            <div className={styles.container()}>
+                <Button style={{
+                    width: 266,
+                    height: 56,
+                    borderRadius: 4,
+                    backgroundColor: "#26333B",
+                    color: "white",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    marginBottom: 24
+                }}>Play</Button>
+                <Button style={{
+                    width: 266,
+                    height: 56,
+                    borderRadius: 4,
+                    backgroundColor: "#26333B",
+                    color: "white",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    marginBottom: 24
+                }}>Play as Guest</Button>
+                <Button style={{
+                    width: 266,
+                    height: 56,
+                    borderRadius: 4,
+                    backgroundColor: "#26333B",
+                    color: "white",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    marginBottom: 24
+                }} onClick={handlelogInClick}>Log In</Button>
+                <Button style={{
+                    width: 266,
+                    height: 56,
+                    borderRadius: 4,
+                    backgroundColor: "#26333B",
+                    color: "white",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    marginBottom: 48
+                }}>Leaderboard</Button>
+                <div className={styles.acc()}>New here?</div>
+                <Button style={{
+                    width: 266,
+                    height: 56,
+                    borderRadius: 4,
+                    backgroundColor: "#26333B",
+                    color: "white",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                }} onClick={handleSignUpClick}>Sign up</Button>
             </div>
         </div>
-    </>;
+    );
 }
-
 
 const styles = {
-    container: css({
-        margin: 0,
-        padding: 0,
-        backgroundColor: '#26333B',
+    body: css({
+        backgroundColor: "#3E5461",
         height: '100vh',
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        paddingTop: 108,
+        fontFamily: 'Helvetica'
     }),
-    centerbox: css({
-        display: "flex",
+    container: css({
+        width: 266,
+        height: 512,
+        alignItems: 'center',
+        margin: '0 auto',
+        marginTop: 48
     }),
-    rightbox: css({
-        justifyContent: "center",
-        alignItems: "center",
+    title: css({
+        width: 480,
+        fontSize: 88,
+        fontWeight: "bold",
+        color: "white",
+        textAlign: "center",
+        margin: '0 auto',
     }),
-    leftbox: css({
-        width: 700,
-        height: 700,
-        display: 'inline'
-    }),
-    top: css({
-        color: 'white',
-        fontSize: 42,
-        padding: 0,
-        margin: 0
-    }),
-    bottom: css({}),
-    wrapper: css({
-        margin: 0,
-        padding: 10,
-        width: 660,
-        height: 210,
-        display: "flex"
-    }),
-    box: css({
-        width: 200,
-        height: 200,
-        backgroundColor: '#3E5461',
-        borderRadius: 25,
-        margin: 5,
+    acc: css({
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "white",
+        textAlign: "center",
+        height: 30,
     })
 }
+

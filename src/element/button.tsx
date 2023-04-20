@@ -5,7 +5,8 @@ interface Props {
   color?: string,
   size?: number,
   children: React.ReactNode,
-  style?: object,
+  style?: object;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export default function Button(props: Props) {
@@ -23,7 +24,7 @@ export default function Button(props: Props) {
   }
 
   return (
-    <button style={style} className={styles.button()}>
+    <button style={style} className={styles.button()} onClick={props.onClick}>
       {props.children}
     </button>
   );
