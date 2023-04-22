@@ -9,23 +9,11 @@ import Group30 from "../svg/group30";
 
 interface Props {};
 
-export default function Home(props: Props) {
+export default function Leaderboard(props: Props) {
     const navigate = useNavigate(); // Get the history object from React Router
 
-    const handlegameClick = () => {
-        navigate("/game");
-    };
-
-    const handleSignUpClick = () => {
-        navigate("/signup");
-    };
-
-    const handlelogInClick = () => {
-        navigate("/login");
-    };
-
-    const handleleaderboardClick = () => {
-        navigate("/leaderboard");
+    const handleBackClick = () => {
+        navigate("/"); 
     };
 
     return (
@@ -40,9 +28,32 @@ export default function Home(props: Props) {
                     </div>
                 </div>
                 <div className = {styles.main()}>
-                    <div className={styles.title()}>Tic Tac Toe</div>
-                    
+                    <div className={styles.title()}>Leaderboard</div>
                     <div className={styles.containersec()}>
+                        <div  className={styles.score()}>
+                            <table className={styles.table()}>
+                                <thead style={{fontWeight: "bold"}}>
+                                    <td>#</td>
+                                    <td>Username</td>
+                                    <td>Scores</td>
+                                </thead>
+                                <tr>
+                                    <td>1</td>
+                                    <td>onlyhuman</td>
+                                    <td>124</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>onlyhuman</td>
+                                    <td>124</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>onlyhuman</td>
+                                    <td>124</td>
+                                </tr>
+                            </table>
+                        </div>
                         <Button style={{
                             width: 266,
                             height: 56,
@@ -51,48 +62,7 @@ export default function Home(props: Props) {
                             color: "white",
                             fontSize: 20,
                             fontWeight: "bold",
-                            marginBottom: 24
-                        }} onClick={handlegameClick}>Play</Button>
-                        <Button style={{
-                            width: 266,
-                            height: 56,
-                            borderRadius: 4,
-                            backgroundColor: "#26333B",
-                            color: "white",
-                            fontSize: 20,
-                            fontWeight: "bold",
-                            marginBottom: 24
-                        }}>Play as Guest</Button>
-                        <Button style={{
-                            width: 266,
-                            height: 56,
-                            borderRadius: 4,
-                            backgroundColor: "#26333B",
-                            color: "white",
-                            fontSize: 20,
-                            fontWeight: "bold",
-                            marginBottom: 24
-                        }} onClick={handlelogInClick}>Log In</Button>
-                        <Button style={{
-                            width: 266,
-                            height: 56,
-                            borderRadius: 4,
-                            backgroundColor: "#26333B",
-                            color: "white",
-                            fontSize: 20,
-                            fontWeight: "bold",
-                            marginBottom: 48
-                        }} onClick={handleleaderboardClick}>Leaderboard</Button>
-                        <div className={styles.acc()}>New here?</div>
-                        <Button style={{
-                            width: 266,
-                            height: 56,
-                            borderRadius: 4,
-                            backgroundColor: "#26333B",
-                            color: "white",
-                            fontSize: 20,
-                            fontWeight: "bold",
-                        }} onClick={handleSignUpClick}>Sign up</Button>
+                        }} onClick={handleBackClick}>Back</Button>
                     </div>
                 </div>
                 <div className={styles.boxwrap()}>
@@ -122,23 +92,29 @@ const styles = {
         display: 'flex',
     }),
     containersec: css({
-        width: 266,
+        width: 548,
         margin: '0 auto',
+        textAlign: "center"
     }),
     main: css({
         display: "block",
-        marginLeft: 100,
-        marginRight: 100,
-        marginTop: 70,
+        marginLeft: 66,
+        marginRight: 66,
+        marginTop: 20,
+    }),
+    score: css({
+        width: 547,
+        backgroundColor: '#567486',
+        margin: 0,
     }),
     title: css({
         width: 480,
-        fontSize: 88,
+        fontSize: 64,
         fontWeight: "bold",
         color: "white",
         textAlign: "center",
         margin: '0 auto',
-        marginBottom: 67
+        marginBottom: 60
     }),
     acc: css({
         fontSize: 20,
@@ -146,6 +122,19 @@ const styles = {
         color: "white",
         textAlign: "center",
         height: 30,
+    }),
+    table: css({
+        alignItems: "center",
+        color: "White",
+        fontSize: 20,
+        fontFamily: 'Helvetica',
+        margin: '0 auto',
+        width: 547,
+        padding: 7,
+        marginBottom: 60,
+        "& td, & th": { 
+        padding: "0 10px", 
+    }
     }),
     boxwrap: css({
         display: "block",
