@@ -1,78 +1,116 @@
-import React from "react";
-import Button from "../element/button";
+import React, { useState } from "react";
 import { css } from "../styles/styles";
+import Ellipse from "../svg/ellipse";
+import Vector from "../svg/vector";
+
+import { useNavigate } from "react-router-dom";
 
 interface Props {};
 
 export default function Game(props: Props) {
+    const [board, setBoard] = useState(Array(9).fill(""));
+    const [turn, setTurn] = useState("X");
+    const [winner, setWinner] = useState("");
+    const navigate = useNavigate()
+
+    const handleBoxClick = (index: number) => {
+        if (board[index] === "" && winner === "") {
+            const newBoard = [...board];
+            newBoard[index] = turn;
+            setBoard(newBoard);
+            setTurn(turn === "X" ? "O" : "X");
+            checkWinner(newBoard);
+        }
+    };
+
+    const checkWinner = (board: string[]) => {
+        const winningCombinations = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        for (let i = 0; i < winningCombinations.length; i++) {
+            const [a, b, c] = winningCombinations[i];
+            if (board[a] !== "" && board[a] === board[b] && board[a] === board[c]) {
+                setWinner(board[a]);
+                navigate(`/${board[a]}`);
+                break;
+            }
+        }
+    };
+
     return (
         <div className={styles.container()}>
+            <div className={styles.textbox()}>
+                <div className={styles.title()}>
+                    Tic Tac Toe
+                </div>
+                <div className={styles.level()}>
+                    Level: Easy
+                </div>
+            
             <div className={styles.centerbox()}>
-                    <div className={styles.wrapper()}>
-                        <div className={styles.box()}></div>
-                        <div className={styles.box()}></div>
-                        <div className={styles.box()}></div>
+                {board.map((box, index) => (
+                    <div
+                        key={index}
+                        className={styles.box()}
+                        onClick={() => handleBoxClick(index)}
+                    >
+                        {box === "X" && <Vector />}
+                        {box === "O" && <Ellipse />}
                     </div>
-                    <div className={styles.wrapper()}>
-                        <div className={styles.box()}></div>
-                        <div className={styles.box()}></div>
-                        <div className={styles.box()}></div>
-                    </div>
-                    <div className={styles.wrapper()}>
-                        <div className={styles.box()}></div>
-                        <div className={styles.box()}></div>
-                        <div className={styles.box()}></div>
-                    </div>
+                ))}
+            </div>
             </div>
         </div>
     );
 }
 
+
 const styles = {
     container: css({
         margin: 0,
-        padding: 0,
-        backgroundColor: '#26333B',
+        backgroundColor: '#3E5461',
         height: '100vh',
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
     }),
+    textbox: css({
+        display: "block"
+    }),
+    title: css({
+        fontSize: 64,
+        fontFamily: "Helvetica",
+        color: "white",
+        fontWeight: "bold",
+    }),
+    level: css({
+        fontSize: 20,
+        fontFamily: "Helvetica",
+        color: "white",
+        fontWeight: "bold",
+    }),
     centerbox: css({
-        display: 'inline',
-        marginTop: 40,
-        width: 700,
-        height: 700,
-    }),
-    leftbox: css({
-        justifyContent: "center",
-        alignItems: "center",
-    }),
-    rightbox: css({
-        width: 700,
-        height: 700,
-        display: 'inline',
-        marginLeft: 100,
-    }),
-    top: css({
-        color: 'white',
-        fontSize: 42,
-        padding: 0,
-        margin: 0
-    }),
-    bottom: css({}),
-    wrapper: css({
-        margin: 0,
-        padding: 1,
-        width: '100%',
         display: 'flex',
+        flexWrap: 'wrap',
+        marginTop: 40,
+        width: 300,
+        height: 300,
     }),
     box: css({
-        width: 200,
-        height: 200,
-        backgroundColor: '#37474F',
+        width: 90,
+        height: 90,
+        backgroundColor: '#567486',
         borderRadius: 10,
         margin: 4,
+        padding: 10,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -83,5 +121,10 @@ const styles = {
         '&:hover': {
             backgroundColor: '#546E7A',
         },
+    }),
+    bottom: css({
+        color: 'white',
+        fontSize: 36,
+        marginTop: 20
     }),
 }

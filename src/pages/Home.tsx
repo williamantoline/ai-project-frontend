@@ -62,7 +62,7 @@ export default function Home(props: Props) {
                             fontSize: 20,
                             fontWeight: "bold",
                             marginBottom: 24
-                        }}>Play as Guest</Button>
+                        }} onClick={handlegameClick}>Play as Guest</Button>
                         <Button style={{
                             width: 266,
                             height: 56,
