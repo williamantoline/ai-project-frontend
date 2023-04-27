@@ -19,7 +19,7 @@ export default function SignUp(props: Props) {
                 <div className={styles.signup()}>Sign Up</div>
                 <div className={styles.textbox()}>
                     <input type="email" className={styles.textfield()} placeholder="Email Adress" />
-                    <input type="password" className={styles.textfield()} placeholder="Username" />
+                    <input type="text" className={styles.textfield()} placeholder="Username" />
                     <input type="password" className={styles.textfield()} placeholder="Password" />
                     <input type="password" className={styles.textfield()} placeholder="Confirm Password" />
                 </div>
