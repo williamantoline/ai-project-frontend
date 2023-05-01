@@ -1,12 +1,61 @@
 import React from "react";
 import Button from "../element/button";
 import { css } from "../styles/styles";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react"; 
+
+const Cookie = require("js-cookie");
 
 interface Props {};
 
 export default function Login(props: Props) {
-    
+    const [emailInput, setEmailInput] = useState("");
+    const handleEmailInputChange = (e: any) => {setEmailInput(e.target.value)};
+    const [passwordInput, setPasswordInput] = useState("");
+    const handlePasswordInputChange = (e: any) => {setPasswordInput(e.target.value)};
+
+    const [isError, setIsError] = useState(false);
+    const [error, setError] = useState("");
+
+    const [_, set_] = useState(false);
+
+    useEffect(() => {
+        axios.post(`http://127.0.0.1:3013/api/auth/jwtToken`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': Cookie.get('token') ?? undefined,
+            }
+        })
+        .then((res: any) => {
+            if(res.data.tokenStatus === true){
+                    window.location.replace("/");
+            }
+        })
+        .catch((err: any) => {
+            setIsError(true);
+            setError(err.response.data.message);
+        })
+    }, [_]);
+
+
+    const handleButtonOnClick = async () => {
+        await axios.post(`http://127.0.0.1:3013/api/auth/login`, {
+            email: emailInput,
+            password: passwordInput,
+        })
+        .then((res: any) => {
+            Cookie.set('token', res.data.token);
+            set_(true);
+        })
+        .catch((err: any) => {
+            setError(err.response);
+            setIsError(true);
+            setPasswordInput("");
+        })
+    }
+
+
     const navigate = useNavigate(); // Get the history object from React Router
 
     const handleSignUpClick = () => {
@@ -15,13 +64,15 @@ export default function Login(props: Props) {
         navigate("/signup"); // Use history.push() to navigate to another page
     };
     
+
+
     return (
         <div className={styles.body()}>
             <div className={styles.container()}>
                 <div className={styles.login()}>Log In</div>
                 <div className={styles.textbox()}>
-                    <input type="email" className={styles.textfield()} placeholder="Email Adress" />
-                    <input type="password" className={styles.textfield()} placeholder="Password" />
+                    <input type="email" className={styles.textfield()} onChange={handleEmailInputChange} placeholder="Email Adress" />
+                    <input type="password" className={styles.textfield()} onChange={handlePasswordInputChange} placeholder="Password" />
                 </div>
                 <Button style={{
                     width: 432,
@@ -31,7 +82,7 @@ export default function Login(props: Props) {
                     color: "white",
                     fontSize: 20,
                     fontWeight: "bold",
-                }}>Log In</Button>
+                }} onClick={handleButtonOnClick}>Log In</Button>
                 <div className={styles.acc()}>Don't have an account?</div>
                 <Button style={{
                     width: 432,
