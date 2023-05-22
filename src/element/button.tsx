@@ -6,6 +6,8 @@ interface Props {
   size?: number,
   children: React.ReactNode,
   style?: object;
+  disabled?: boolean;
+  isDisabled?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
@@ -23,11 +25,20 @@ export default function Button(props: Props) {
     ...props.style,
   }
 
-  return (
-    <button style={style} className={styles.button()} onClick={props.onClick}>
-      {props.children}
-    </button>
-  );
+  if (props.isDisabled) {
+    return (
+      <button style={style} className={styles.button()} onClick={props.onClick} disabled={true}>
+        {props.children}
+      </button>
+    );
+  } else {
+    return (
+      <button style={style} className={styles.button()} onClick={props.onClick}>
+        {props.children}
+      </button>
+    );
+  }
+  
 
 }
 
