@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../element/button";
 import { css } from "../styles/styles";
 import { useNavigate } from "react-router-dom"; 
@@ -6,11 +6,32 @@ import Group24 from "../svg/group24";
 import Group28 from "../svg/group28";
 import Group29 from "../svg/group29";
 import Group30 from "../svg/group30";
+import axios from "axios";
+import { endpoint } from "../config";
+const Cookie = require("js-cookie");
 
 interface Props {};
 
 export default function Home(props: Props) {
+
     const navigate = useNavigate(); // Get the history object from React Router
+
+    const [isLogged, setIsLogged] = useState(false);
+    const [_, set_] = useState("");
+
+    useEffect(() => {
+        axios.get(`${endpoint}/api/auth/auth`, {
+          headers: {
+            'Authorization': Cookie.get('token'),
+          }
+        })
+        .then((res) => {
+          setIsLogged(true);
+        })
+        .catch((err) => {
+          setIsLogged(false);
+        })
+      }, [_]);
 
     const handlegameClick = () => {
         navigate("/game");
@@ -28,6 +49,11 @@ export default function Home(props: Props) {
         navigate("/leaderboard");
     };
 
+    const handleLogoutClick = () => {
+        Cookie.set("token", null);
+        set_("0");
+    };
+
     return (
         <div className={styles.body()}>
             <div className={styles.container()}>
@@ -43,16 +69,31 @@ export default function Home(props: Props) {
                     <div className={styles.title()}>Tic Tac Toe</div>
                     
                     <div className={styles.containersec()}>
-                        <Button style={{
-                            width: 266,
-                            height: 56,
-                            borderRadius: 4,
-                            backgroundColor: "#26333B",
-                            color: "white",
-                            fontSize: 20,
-                            fontWeight: "bold",
-                            marginBottom: 24
-                        }} onClick={handlegameClick}>Play</Button>
+                        {
+                            isLogged ? 
+                            <Button style={{
+                                width: 266,
+                                height: 56,
+                                borderRadius: 4,
+                                backgroundColor: "#26333B",
+                                color: "white",
+                                fontSize: 20,
+                                fontWeight: "bold",
+                                marginBottom: 24
+                            }} onClick={handlegameClick}>Play</Button>
+                            :
+                            <Button disabled style={{
+                                width: 266,
+                                height: 56,
+                                borderRadius: 4,
+                                backgroundColor: "#567486",
+                                color: "#8C8C8C",
+                                fontSize: 20,
+                                fontWeight: "bold",
+                                marginBottom: 24
+                            }}>Play</Button>
+                        }
+                        
                         <Button style={{
                             width: 266,
                             height: 56,
@@ -63,16 +104,32 @@ export default function Home(props: Props) {
                             fontWeight: "bold",
                             marginBottom: 24
                         }} onClick={handlegameClick}>Play as Guest</Button>
-                        <Button style={{
-                            width: 266,
-                            height: 56,
-                            borderRadius: 4,
-                            backgroundColor: "#26333B",
-                            color: "white",
-                            fontSize: 20,
-                            fontWeight: "bold",
-                            marginBottom: 24
-                        }} onClick={handlelogInClick}>Log In</Button>
+                        {
+                            isLogged
+                            ?
+                            <Button style={{
+                                width: 266,
+                                height: 56,
+                                borderRadius: 4,
+                                backgroundColor: "#26333B",
+                                color: "white",
+                                fontSize: 20,
+                                fontWeight: "bold",
+                                marginBottom: 24
+                            }} onClick={handleLogoutClick}>Log Out</Button>
+                            :
+                            <Button style={{
+                                width: 266,
+                                height: 56,
+                                borderRadius: 4,
+                                backgroundColor: "#26333B",
+                                color: "white",
+                                fontSize: 20,
+                                fontWeight: "bold",
+                                marginBottom: 24
+                            }} onClick={handlelogInClick}>Log In</Button>
+                        }
+                        
                         <Button style={{
                             width: 266,
                             height: 56,
@@ -83,16 +140,25 @@ export default function Home(props: Props) {
                             fontWeight: "bold",
                             marginBottom: 48
                         }} onClick={handleleaderboardClick}>Leaderboard</Button>
-                        <div className={styles.acc()}>New here?</div>
-                        <Button style={{
-                            width: 266,
-                            height: 56,
-                            borderRadius: 4,
-                            backgroundColor: "#26333B",
-                            color: "white",
-                            fontSize: 20,
-                            fontWeight: "bold",
-                        }} onClick={handleSignUpClick}>Sign up</Button>
+                        {
+                            isLogged
+                            ?
+                            <></>
+                            :
+                            <>
+                                <div className={styles.acc()}>New here?</div>
+                                <Button style={{
+                                    width: 266,
+                                    height: 56,
+                                    borderRadius: 4,
+                                    backgroundColor: "#26333B",
+                                    color: "white",
+                                    fontSize: 20,
+                                    fontWeight: "bold",
+                                }} onClick={handleSignUpClick}>Sign up</Button>
+                            </>
+                        }
+                        
                     </div>
                 </div>
                 <div className={styles.boxwrap()}>

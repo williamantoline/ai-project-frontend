@@ -1,76 +1,87 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../element/button";
 import { useNavigate } from "react-router-dom"; 
 import { css } from "../styles/styles";
 import axios from "axios";
-import { useEffect,useState } from "react";
-
-const Cookie = require("js-cookie");
-
+import { endpoint } from "../config";
 
 interface Props {};
 
 export default function SignUp(props: Props) {
-    const [nameInput, setNameInput] = useState("");
-    const handleNameInputChange = (e: any) => {setNameInput(e.target.value)};
-    const [emailInput, setEmailInput] = useState("");
-    const handleEmailInputChange = (e: any) => {setEmailInput(e.target.value)};
-    const [passwordInput, setPasswordInput] = useState("");
-    const handlePasswordInputChange = (e: any) => {setPasswordInput(e.target.value)};
-    const [cPasswordInput, setCPasswordInput] = useState("");
-    const handleCPasswordInputChange = (e: any) => {setCPasswordInput(e.target.value)};
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [cpassword, setCPassword] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [usernameError, setUsernameError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
 
-    useEffect(() => {
-        axios.post(`http://127.0.0.1:3013/api/auth/jwtToken`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': Cookie.get('token'),
-            }
-        })
-        .then((res: any)=>{
-            if(res.data.tokenStatus === true){
-                window.location.replace("/");
-            }
-        })
-    }, []);
+    const handleEmailOnChange = (e: any) => {
+        setEmail(e.target.value);
+    }
+    const handleUsernameOnChange = (e: any) => {
+        setUsername(e.target.value);
+    }
+    const handlePasswordOnChange = (e: any) => {
+        setPassword(e.target.value);
+    }
+    const handleCPasswordOnChange = (e: any) => {
+        setCPassword(e.target.value);
+    }
 
-    const handleButtonOnClick = async () => {
-        if (passwordInput !== cPasswordInput) {
-            alert("Password and password confirmation do not match!");
+    const handleButtonOnClick = () => {
+        if (password !== cpassword) {
+            alert("Password and Confirm Password should be the same!");
+            setPassword("");
+            setCPassword("");
+            return;
         }
-
-        await axios.post(`http://127.0.0.1:3013/api/auth/register`, {
-            name: nameInput,
-            email: emailInput,
-            password: passwordInput,
-        })
-        .then((res: any) => {
-            Cookie.set('token', res.data.token);
-            window.location.replace("/login");
-        })
-        .catch((err: any) => {
-            setPasswordInput("");
-            setCPasswordInput("");
+        setEmailError("");
+        setUsernameError("");
+        setPasswordError("");
+        axios.post(`${endpoint}/api/auth/register`, {
+            email: email,
+            name: username,
+            password: password,
+        }).then((res) => {
+            alert(res.data);
+            navigate("/login");
+        }).catch((err) => {
+            let statusCode = err.response.status;
+            if (statusCode === 400) {
+                let errors = err.response.data.errors;
+                errors.forEach((error: any) => {
+                    if (error.param === 'email') {
+                        setEmailError(error.msg);
+                    } else if (error.param === 'name') {
+                        setUsernameError(error.msg);
+                    } else if (error.param === 'password') {
+                        setPasswordError(error.msg);
+                    }
+                });
+            }
         })
     }
 
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Get the history object from React Router
 
-    const handleLogInClick = () => {
+    const handlelogInClick = () => {
         // Logic to navigate to the sign up page
         // You can replace this with your own implementation
         navigate("/login"); // Use history.push() to navigate to another page
     };
-
     return (
         <div className={styles.body()}>
             <div className={styles.container()}>
                 <div className={styles.signup()}>Sign Up</div>
                 <div className={styles.textbox()}>
-                    <input type="email" className={styles.textfield()} onChange={handleEmailInputChange} placeholder="Email Adress" />
-                    <input type="text" className={styles.textfield()} onChange={handleNameInputChange} placeholder="Username" />
-                    <input type="password" className={styles.textfield()} onChange={handlePasswordInputChange} placeholder="Password" />
-                    <input type="password" className={styles.textfield()} onChange={handleCPasswordInputChange} placeholder="Confirm Password" />
+                    <p className={styles.errorMessage()}>{emailError}</p>
+                    <input value={email} onChange={handleEmailOnChange} type="email" className={styles.textfield()} placeholder="Email Adress" />
+                    <p className={styles.errorMessage()}>{usernameError}</p>
+                    <input value={username} onChange={handleUsernameOnChange} type="text" className={styles.textfield()} placeholder="Username" />
+                    <p className={styles.errorMessage()}>{passwordError}</p>
+                    <input value={password} onChange={handlePasswordOnChange} type="password" className={styles.textfield()} placeholder="Password" />
+                    <input value={cpassword} onChange={handleCPasswordOnChange} type="password" className={styles.textfield()} placeholder="Confirm Password" />
                 </div>
                 <Button style={{
                     width: 432,
@@ -80,7 +91,9 @@ export default function SignUp(props: Props) {
                     color: "white",
                     fontSize: 20,
                     fontWeight: "bold",
-                }}onClick={handleButtonOnClick}>Sign Up</Button>
+                }}
+                onClick={handleButtonOnClick}
+                >Sign Up</Button>
                 <div className={styles.acc()}>Already have an account?</div>
                 <Button style={{
                     width: 432,
@@ -92,7 +105,7 @@ export default function SignUp(props: Props) {
                     color: "white",
                     fontSize: 20,
                     fontWeight: "bold",
-                }}onClick={handleLogInClick}>Log In</Button>
+                }}onClick={handlelogInClick}>Log In</Button>
             </div>
         </div>
     )
@@ -109,6 +122,10 @@ const styles = {
         width: 432,
         alignItems: 'center',
         margin: '0 auto',
+    }),
+    errorMessage: css({
+        color: "white",
+        backgroundColor: "red",
     }),
     signup: css({
         width: 432,
