@@ -6,6 +6,7 @@ import Game from "./pages/game";
 import Leaderboard from "./pages/leaderboard";
 import X from "./pages/X";
 import O from "./pages/O";
+import Draw from "./pages/draw";
 
 
 export default function Router() {
@@ -19,6 +20,7 @@ export default function Router() {
                 <Route element={<Leaderboard />} path={"/leaderboard"} />
                 <Route element={<X />} path={"/X"} />
                 <Route element={<O />} path={"/O"} />
+                <Route element={<Draw />} path={"/draw"} />
             </Routes>
         </BrowserRouter>
     );
