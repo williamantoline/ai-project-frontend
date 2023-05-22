@@ -15,10 +15,11 @@ export const resetStyles = globalCss({
     padding: 0,
   },
   img: {
-    maxHeight: "100%"
+    maxHeight: "100%",
   },
   button: {
-    border: 0
+    border: 0,
+    cursor: "pointer",
   },
   a: {
     color: "white",
