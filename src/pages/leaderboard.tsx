@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../element/button";
 import { css } from "../styles/styles";
 import { useNavigate } from "react-router-dom"; 
@@ -6,6 +6,10 @@ import Group24 from "../svg/group24";
 import Group28 from "../svg/group28";
 import Group29 from "../svg/group29";
 import Group30 from "../svg/group30";
+import axios from "axios";
+import LeaderboardItem from "../element/leaderboard-item";
+import { endpoint } from "../config";
+const Cookie = require("js-cookie");
 
 interface Props {};
 
@@ -15,6 +19,24 @@ export default function Leaderboard(props: Props) {
     const handleBackClick = () => {
         navigate("/"); 
     };
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [leaderboards, setLeaderboards] = useState([]);
+
+    useEffect(() => {
+        axios.get(`${endpoint}/api/leaderboard`, {
+            headers: {
+                "token": Cookie.get('token') ?? null,
+            }
+        })
+            .then((res) => {
+                setLeaderboards(res.data.data);
+                setIsLoading(false);
+            })
+            .catch((err) => {
+                alert("Internal server error!");
+            })
+    }, []);
 
     return (
         <div className={styles.body()}>
@@ -37,21 +59,17 @@ export default function Leaderboard(props: Props) {
                                     <td>Username</td>
                                     <td>Scores</td>
                                 </thead>
-                                <tr>
-                                    <td>1</td>
-                                    <td>onlyhuman</td>
-                                    <td>124</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>onlyhuman</td>
-                                    <td>124</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>onlyhuman</td>
-                                    <td>124</td>
-                                </tr>
+                                {
+                                    !isLoading 
+                                    ?
+                                    leaderboards.map((item: any, idx: any) => {
+                                        return (
+                                            <LeaderboardItem idx={idx+1} item={item} />
+                                        )
+                                    })
+                                    :
+                                    <></>
+                                }
                             </table>
                         </div>
                         <Button style={{
