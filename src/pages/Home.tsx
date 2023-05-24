@@ -98,12 +98,12 @@ export default function Home(props: Props) {
                             width: 266,
                             height: 56,
                             borderRadius: 4,
-                            backgroundColor: "#26333B",
-                            color: "white",
+                            backgroundColor: isLogged ? "#567486" : "#26333B",
+                            color: isLogged ? "#8C8C8C" : "white" ,
                             fontSize: 20,
                             fontWeight: "bold",
                             marginBottom: 24
-                        }} onClick={handlegameClick}>Play as Guest</Button>
+                        }} onClick={isLogged ? () => {} : handlegameClick}>Play as Guest</Button>
                         {
                             isLogged
                             ?
