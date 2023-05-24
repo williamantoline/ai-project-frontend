@@ -100,7 +100,7 @@ export default function Game(props: Props) {
         return gameWon;
     }
 
-    const minimax = (newBoard: any, player: any) => {
+    const minimax = (newBoard: any, player: any, alpha: any = -Infinity, beta: any = Infinity) => {
         var availSpots = emptySquares(newBoard);
     
         if (checkWin(newBoard, player)) {
@@ -119,17 +119,18 @@ export default function Game(props: Props) {
             newBoard[availSpots[i]] = player;
     
             if (player === aiPlayer) {
-                result = minimax(newBoard, huPlayer);
+                result = minimax(newBoard, huPlayer, alpha, beta);
                 move.score = result.score;
             } else {
-                result = minimax(newBoard, aiPlayer);
+                result = minimax(newBoard, aiPlayer, alpha, beta);
                 move.score = result.score;
             }
     
             newBoard[availSpots[i]] = move.index;
-    
+
             moves.push(move); 
         }
+
     
         var bestMove = 0;
         var bestScore;
@@ -138,6 +139,10 @@ export default function Game(props: Props) {
             for (var k=0; k<moves.length; k++) {
                 if (moves[k].score > bestScore) {
                     bestScore = moves[k].score;
+                    alpha = Math.max(alpha, bestScore);
+                    if (beta <= alpha) {
+                        break;
+                    }
                     bestMove = k;
                 }
             }
@@ -146,6 +151,10 @@ export default function Game(props: Props) {
             for (var j=0; j<moves.length; j++) {
                 if (moves[j].score < bestScore) {
                     bestScore = moves[j].score;
+                    beta = Math.min(beta, bestScore);
+                    if (beta <= alpha) {
+                        break;
+                    }
                     bestMove = j;
                 }
             }
@@ -164,7 +173,7 @@ export default function Game(props: Props) {
             newBoard[takenTurn] = turn;
 
         } else {
-            let takenTurn = minimax(newBoard, aiPlayer).index;
+            let takenTurn = minimax(newBoard, aiPlayer, -Infinity, Infinity).index;
             newBoard[takenTurn] = turn;
         }
         
