@@ -47,8 +47,7 @@ export default function SignUp(props: Props) {
             alert(res.data);
             navigate("/login");
         }).catch((err) => {
-            let statusCode = err.response.status;
-            if (statusCode === 400) {
+            if (err.response && err.response.status && err.response.statusCode === 400) {
                 let errors = err.response.data.errors;
                 errors.forEach((error: any) => {
                     if (error.param === 'email') {
