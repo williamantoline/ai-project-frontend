@@ -36,9 +36,8 @@ export default function Game(props: Props) {
 
     const sendScore = (s: any) => {
         let actualScore = determineScore(s);
-
         let userToken = Cookie.get("token");
-        if (userToken === "null") return;
+        if (userToken === undefined) return;
         let data = Cookie.get("token") + "--" + actualScore.toString() + "--" + (new Date()).getTime();
         let encrypted = CryptoJS.AES.encrypt(data, enckey).toString();
 
